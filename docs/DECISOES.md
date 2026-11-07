@@ -8,12 +8,18 @@
 - Repositório inicialmente privado por escolha operacional conservadora nesta fase. O pedido autoriza o envio dos guias; não foi tratado como solicitação de implementar e publicar os aplicativos.
 - Nenhuma postagem no X enviada. Textos de protótipo e lançamento têm condições explícitas de uso.
 
-## Pendências técnicas
+## 2026-11-07 — implementação e aceite local
 
-- Documentação técnica sobre reconhecimento óptico de placas e suas limitações.
-- Separar o escopo de captura/OCR das tecnologias de medição de velocidade.
+O pedido posterior de desenvolver todos os projetos autorizou a aplicação; publicação permanece fora desta rodada.
 
-Próxima ação: Desenhar os quadros captura → recorte → caracteres com uma placa cenográfica e um único cenário.
+- Cena autoral com carro, placa LAB3D, câmera e campo de visão. Captura virtual fixa no meio da passagem; nenhuma placa real ou cadastro consultado.
+- Quadro e recorte vêm do renderer. Caracteres são resultados pré-definidos, explicitados junto à imagem. Ângulo e exposição alteram os pixels sem simular sensor calibrado.
+- Revisão invalida captura e resultado ao trocar condição, repetir ou reiniciar. Exploração não interfere na câmera de captura.
+- Marca, fontes locais, seleção, isolamento, tour, malha, tela cheia e PNGs. Corte/desmontagem e áudio dispensados por não ajudarem a pergunta.
+- Sete testes, 117 verificações Chrome e build em subpasta aprovados. Celular emulado, sem ensaio físico ou taxa de OCR medida.
+- Guias e rascunho de bastidor atualizados. Sem deploy ou envio ao X.
+
+Próximo da coleção: motor-navio. Evidências em VALIDACAO.md.
 
 ## Como registrar mudanças
 

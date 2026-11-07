@@ -12,10 +12,10 @@ Quero transformar o vídeo sobre leitura de placas em uma demonstração interat
 
 ## Bastidor
 
-Condição/mídia: Usar somente depois de existir o protótipo descrito. Anexar captura real da interação; ajustar o texto ao que efetivamente funcionar.
+Condição/mídia: versão local implementada e validada em 07/11/2026. Anexar captura real. Ainda não há URL pública.
 
 ```text
-Neste protótipo, você acompanha o caminho da placa: imagem inteira, recorte e leitura. Também estou separando duas coisas que costumam aparecer juntas: reconhecer a placa e medir a velocidade.
+O laboratório de placas já funciona: o carro passa, a câmera virtual captura e você acompanha o recorte até os caracteres. Dá para comparar ângulo e pouca luz. A placa é inventada e a leitura é demonstrativa, sem OCR real ou medição de velocidade.
 ```
 
 ## Lançamento

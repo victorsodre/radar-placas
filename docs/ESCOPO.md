@@ -15,11 +15,11 @@ Um carro, uma câmera e uma placa fictícia. A experiência mostra captura, reco
 - Região da placa
 - Caracteres e resultado
 
-Esses grupos são uma proposta semântica; validar sua correspondência com a geometria e as fontes antes de nomear peças como reais.
+Implementados veículo, placa, câmera e campo de visão como quatro conjuntos exploráveis. Quadro, região da placa e caracteres são etapas do painel de leitura, sem convertê-los em peças físicas.
 
 ## Ações principais
 
-| Controle | Comportamento planejado |
+| Controle | Comportamento entregue |
 |---|---|
 | Passar pela câmera | Executa uma captura ilustrativa em posição definida. |
 | Alterar condição | Compara ângulo ou iluminação usando exemplos controlados. |
@@ -47,3 +47,13 @@ Base de exploração: órbita, zoom, seleção por lista ou clique, isolamento, 
 - Upload de fotos pessoais e reconhecimento de veículos do público.
 
 Ampliações entram no backlog após o piloto, com evidência de uso e esforço. Não incluir funcionalidades só para repetir todas as opções do Fusquinha.
+
+## Correspondência da implementação
+
+Passar pela câmera move o carro, congela uma imagem no ponto marcado e termina a passagem. Alterar condição troca ângulo ou exposição e invalida a leitura anterior. Ver leitura conduz por captura, recorte, caracteres e conferência. Pausa, retomada, reset e movimento reduzido mantêm o mesmo contrato.
+
+Corte e desmontagem não ajudam a pergunta desta experiência; exploração, isolamento, foco, tour, malha e PNG cobrem as opções pertinentes do Fusquinha. Áudio dispensado por não acrescentar informação. Evidências e limites em VALIDACAO.md.
+
+## Aceite em 07/11/2026
+
+Os seis conjuntos semânticos e as três ações foram implementados conforme a correspondência acima. Sete testes, 117 verificações Chrome, build em subpasta e capturas reais aprovados. Placas inventadas, distinção de velocidade e resultado pré-definido permanecem explícitos. Limites em VALIDACAO.md; sem deploy ou postagem.

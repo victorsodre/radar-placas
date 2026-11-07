@@ -1,6 +1,6 @@
 # Como o radar lê uma placa
 
-> **Estado: documentação inicial.** Aplicação ainda não implementada. Planejamento criado em 2026-11-07; prioridade recomendada 7/10.
+> **Desenvolvimento concluído e validado localmente em 07/11/2026.** Sétimo projeto da coleção; repositório privado, sem deploy.
 
 **Como uma imagem vira uma sequência de letras e números?**
 
@@ -20,16 +20,39 @@ O Reel registrou 177.582 visualizações, 892 salvamentos e 7.269 compartilhamen
 1. [Escopo e critérios de conclusão](docs/ESCOPO.md).
 2. [Lista de execução](docs/EXECUCAO.md).
 3. [Identidade visual do ovictorlab](docs/IDENTIDADE-VISUAL.md).
-4. [Arquitetura proposta e reaproveitamento do Fusquinha](docs/ARQUITETURA.md).
-5. [Assets, fontes e pendências de apuração](docs/ASSETS-E-FONTES.md).
+4. [Arquitetura e reaproveitamento do Fusquinha](docs/ARQUITETURA.md).
+5. [Assets e fontes apuradas](docs/ASSETS-E-FONTES.md).
 6. [Manutenção, validação e publicação futura](docs/MANUTENCAO.md).
 7. [Decisões e estado do projeto](docs/DECISOES.md).
 8. [Textos para o X](POSTAGENS-X.md) e [ordem da coleção](docs/COLECAO.md).
 
-**Próxima ação:** Desenhar os quadros captura → recorte → caracteres com uma placa cenográfica e um único cenário.
+## Experiência entregue
 
-**Esforço relativo:** Médio: geometria simples; clareza entre demonstração e processamento real é essencial. Prazo só deve ser estimado depois da validação de modelo e fontes.
+Carro e placa cenográficos, câmera e campo de visão exploráveis. A passagem tem pausa, retomada e captura em um ponto fixo. Boa captura, ângulo aberto e pouca luz mudam a câmera ou a exposição; trocar a condição descarta o resultado anterior.
 
-## O que esta entrega inclui
+A câmera virtual gera uma imagem de 1280 × 720. O recorte usa os pixels dessa imagem. As etapas seguintes apresentam caracteres **pré-definidos**, com comparação à placa inventada LAB3D. Não há OCR real, consulta a cadastro ou medição de velocidade. Os limites aparecem junto ao resultado.
 
-Guias de desenvolvimento e manutenção, identidade visual, limites de escopo e rascunhos de divulgação. Não há aplicação, modelo 3D novo, licença de asset adquirida ou site publicado. Os repositórios foram preparados para trabalho independente, inicialmente privado. Não existe `npm install`, `npm test` ou deploy a executar nesta fase.
+Seleção por lista/clique, busca, isolamento, foco, tour de quatro conjuntos, malha, tela cheia e PNG horizontal/vertical. Geometria e imagens autorais; marca e fontes locais do ovictorlab.
+
+## Executar
+
+Node.js >=22.18; versões exatas no lockfile.
+
+```sh
+npm ci
+npm run dev
+npm test
+npm run check
+npm run build
+npm run preview
+```
+
+`dev`: http://127.0.0.1:4311/ . `preview` informa sua porta. Build estático em `dist/`, com base relativa e validação em subpasta. Sem backend, LLM, credenciais ou uso da GPU de produção.
+
+## Evidências e limites
+
+[Apuração](docs/APURACAO.md), [validação](docs/VALIDACAO.md) e [manutenção](docs/MANUTENCAO.md). Sete testes cobrem transições, invalidação, movimento, projeção e enquadramento; 117 verificações de navegador aprovadas. Validação móvel por viewport do Chrome no Mac, sem telefone físico.
+
+O carro, a câmera, a iluminação e o trajeto são ilustrativos. Não há sensor calibrado, taxa de acerto, identidade de proprietário ou constatação de infração. Capturas ficam apenas na memória da página; reiniciar ou alterar a condição as descarta.
+
+[POSTAGENS-X.md](POSTAGENS-X.md) contém rascunhos para Victor publicar depois. Nenhum aplicativo ou postagem social foi publicado.

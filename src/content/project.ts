@@ -1,0 +1,6 @@
+export const project={video:'https://www.youtube.com/watch?v=F5GFaFoAbYg',name:'Como o radar lê uma placa'};
+export const sources=[
+ {id:'capture',title:'Da captura aos caracteres',author:'Axis Communications',date:'Dezembro de 2024 · consulta 07/11/2026',url:'https://whitepapers.axis.com/en-us/license-plate-capture',method:'Documento técnico sobre captura de placas, qualidade de imagem e leitura por software.',scope:'Ângulo, foco, iluminação e exposição afetam a imagem disponível. Recomendações do fabricante dependem do equipamento; não são uma taxa de acerto deste laboratório.'},
+ {id:'speed',title:'Ler a placa não é medir velocidade',author:'Inmetro',date:'Atualizado em 05/12/2023 · consulta 07/11/2026',url:'https://www.gov.br/inmetro/pt-br/acesso-a-informacao/perguntas-frequentes/metrologia-legal/medidor-de-velocidade-radar/como-o-radar-de-lacos-indutivos-faz-para-distinguir-qual-veiculo-excedeu-a-velocidade-se-muitos-passam-ao-mesmo-tempo-sobre-a-via',method:'Exemplo de medição por laços indutivos: distância conhecida entre sensores e tempo de passagem.',scope:'É uma tecnologia de medição, não a descrição de todos os equipamentos. Reconhecer letras, por si só, não fornece velocidade. Esta experiência não mede velocidade ou constata infrações.'},
+] as const;
+export type SourceId=typeof sources[number]['id'];

@@ -1,71 +1,35 @@
-# Arquitetura proposta
+# Arquitetura implementada
 
-Documento de planejamento. Nenhum comando de build ou teste existe ainda neste repositório.
+Aplicação estática: React 19.2.6, TypeScript 5.9.3, Three.js 0.187.0 e Vite 8.3.6. Node >=22.18; versões exatas no lockfile. Não depende dos outros repositórios ou da GPU de produção.
 
-## Base
+| Módulo | Responsabilidade |
+|---|---|
+| src/App.tsx | Passagem, revisão das etapas, invalidação, seleção e fallback |
+| src/simulation/flow.ts | Transições, relógio limitado, revisões e condições demonstrativas |
+| src/scene/model.ts | Carro, placa, câmera, via, campo de visão e poses determinísticas |
+| src/scene/projection.ts | Projeção dos quatro cantos e retângulo de recorte validado |
+| src/scene/runtime.ts | Renderização, câmera de exploração, câmera de captura, seleção e descarte |
+| src/scene/camera.ts | Enquadramento dos volumes por projeção |
+| src/scene/capture.ts | PNG de exploração com marca e limites |
+| src/content/ | Catálogo, vídeo e fontes primárias |
+| src/ui/ e styles.css | Marca, fichas, layout e controles HTML |
 
-React + TypeScript + Three.js + Vite, como referência do Fusquinha. Fixar versões e lockfile no início da implementação, após verificar compatibilidade atual e licença do código reaproveitado. Não adotar a versão antiga do Three apenas por cópia automática.
+## Estado e invariantes
 
-Aplicação estática executada no navegador do visitante. O MVP não requer LLM, backend nem GPU de produção permanentemente alocada. Modelagem e processamento de assets são tarefas separadas e delimitadas.
+`ready → captured → cropped → recognized → reviewed`. Uma passagem dura quatro segundos de animação, sem velocidade física atribuída. A captura corresponde sempre ao progresso 0,5. O carro termina em 1 e para. Tempo por atualização limitado a 0,1 s; pausa/ocultação congelam o progresso. Movimento reduzido permite atingir o final por gesto, sem animar.
 
-## Organização sugerida
+Cada nova passagem, mudança de condição ou reset incrementa `revision`. Uma captura só pode ser exibida quando sua revisão e condição correspondem ao fluxo atual. Navegar para uma etapa anterior não altera seus pixels ou libera uma etapa ainda não atingida. Reset restaura boa captura, origem, sem seleção, isolamento ou malha.
 
-```text
-src/
-  app/              composição da tela e estados de carregamento
-  scene/            cena, câmera, iluminação e renderização
-  interactions/     seleção, isolamento, corte e desmontagem
-  simulation/       estado determinístico do mecanismo educativo
-  content/          catálogo, explicações, vídeos e fontes
-  ui/               controles HTML acessíveis
-  styles/           tokens do ovictorlab e layout
-public/
-  models/           somente arquivos com entrega web autorizada
-  audio/            sons licenciados, carregados sob demanda
-  fonts/            fontes locais e respectivas licenças
-```
+IDs físicos: vehicle, plate, camera, field. Placa e carro usam a mesma translação; rodas derivam da distância percorrida. Campo de visão é guia, não intercepta cliques sobre o carro; também pode ser selecionado pela lista. Quadros, região da placa e resultado são informações do painel HTML.
 
-Criar só o que o piloto utilizar. Começar independente; extrair um pacote compartilhado depois que o segundo projeto comprovar reutilização concreta.
+## Captura e recorte
 
-## Contratos
+Uma câmera própria, independente da órbita do visitante, renderiza 1280 × 720 no ponto de captura. Durante essa operação, guias, câmera cenográfica, seleção e malha de exploração ficam ocultas. O recorte usa a caixa dos quatro cantos projetados, com margem de oito pixels. Imagem e recorte são PNGs locais em memória. Não há detector, OCR, servidor ou upload.
 
-- Peça: `id`, `label`, `groupId`, nós do modelo, pose de origem, descrição e referências. IDs estáveis entre atualizações.
-- Seleção: um catálogo determina o que pode ser selecionado; elementos auxiliares não capturam clique por acidente.
-- Desmontagem: transformação deriva de pose de origem e progresso 0–1; nunca acumula deslocamento a cada frame. Corte e desmontagem são modos distintos.
-- Mecanismo: estado serializável, limites explícitos, pausa e reset. Tempo de animação não depende de quantidade de frames.
-- Fontes: título, instituição/autor, URL, data de consulta, afirmação suportada e limite. Texto da interface aponta para esse catálogo.
-- Áudio: inicia após gesto, tem volume/mute e para com cena oculta ou mecanismo desligado.
+A rotina restaura pose do modelo, visibilidade, materiais, exposição, tamanho e DPR do renderer. O PNG de divulgação também restaura a câmera. As condições alteram posição da câmera ou exposição virtual; a sequência de caracteres é um exemplo previsto, explicitado na UI.
 
-## O que avaliar no Fusquinha
+## Renderização e falhas
 
-`src/VehicleScene.tsx`: renderização/câmera/seleção. `src/catalog.ts`: agrupamento. `src/layout.ts`: posições e enquadramento. `src/vehicle-rig.ts`: pivôs e articulação. `src/vehicle-sounds.ts`: áudio. `src/engine-motion.ts`: movimento e pausa. Esses arquivos são referências de implementação, não garantem uma biblioteca pronta para outros objetos.
+DPR até 1,5; sombra 1024; renderização sob demanda com limite de 30 atualizações/s. Para em repouso e em página oculta. Não há órbita automática ou áudio. Limite de atualização não é medição de desempenho em telefone.
 
-Antes de copiar, conferir responsabilidades, licenças e dependências. Motor, material, cenário e GLB do Fusquinha não pertencem automaticamente ao novo projeto.
-
-## Orçamento inicial de desempenho
-
-Metas propostas a validar no primeiro protótipo, não resultados já medidos:
-
-- Cena em aproximadamente 30 fps durante interação no dispositivo móvel de referência registrado.
-- Renderização sob demanda quando parada; suspender trabalho em aba oculta.
-- Começar com DPR limitado a 1,5 no celular, texturas de 1K quando suficientes e cena progressiva. Ajustar por medição visual e de memória.
-- Buscar até 10 MB comprimidos para a primeira cena útil; qualquer exceção precisa de comparação antes/depois e carregamento progressivo.
-- Medir modelo, texturas, draw calls e tempo até o primeiro controle utilizável. Evitar simulação física genérica quando uma cinemática determinística explica o fenômeno.
-
-## Entrega futura
-
-Build estático com caminhos relativos ou base configurável; testar recarga direta e hospedagem em subpasta. Integração com ovictorlab.com pode usar rota ou link, a decidir quando houver aplicação pronta. Não alterar o site principal durante o desenvolvimento inicial.
-
-Captura PNG é uma possibilidade herdada do Fusquinha. Presets de câmera 16:9 e 9:16 e tour guiado são extensões planejadas; não estão implementados. Gravar vídeo exige validar o método de captura e sincronização do som.
-
-## Implementação específica
-
-Geometria: Via curta, carro simples e câmera; a explicação principal ocorre em quadros sincronizados com a posição do veículo.
-
-Estado proposto: `ready → captured → cropped → recognized → reviewed; changingCondition invalida o resultado anterior.`
-
-Invariantes que devem orientar código e testes:
-
-- Usar somente placas inventadas e não consultar bases de veículos ou pessoas.
-- Distinguir leitura óptica de placa e medição de velocidade; uma não comprova a outra.
-- Resultados pré-calculados são rotulados como demonstração, sem alegar OCR real ou taxa de acerto medida.
+Perda ou indisponibilidade inicial de WebGL preserva explicações/fontes e desabilita ações 3D. Uma captura já feita continua consultável após perda de contexto. Recarregar tenta recriar a cena. Build com base `./`, conferido em `/radar-placas/`. Medidas e limitações em VALIDACAO.md.
