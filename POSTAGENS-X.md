@@ -4,10 +4,10 @@ Rascunhos para Victor publicar posteriormente. **Nada foi enviado.** Público: p
 
 ## Apresentação do projeto
 
-Condição/mídia: Versão local concluída. Anexar captura real; o texto não anuncia uma URL pública.
+Condição/mídia: Anexar captura real da experiência. URL: https://victorsodre.github.io/radar-placas/
 
 ```text
-O vídeo sobre leitura de placas virou uma demonstração interativa. Um carro fictício passa pela câmera virtual; você vê a captura e o recorte. Os caracteres são pré-definidos e identificados como demonstração, sem OCR real.
+Como uma imagem vira uma placa lida? A experiência 3D do ovictorlab mostra captura, recorte e leitura ilustrativa. A placa é fictícia e os resultados são pré-definidos, sem OCR real. Já está no ar.
 ```
 
 ## Bastidor
@@ -20,10 +20,10 @@ O laboratório de placas já funciona: o carro passa, a câmera virtual captura 
 
 ## Lançamento
 
-Condição/mídia: Usar somente depois de publicar e validar o aplicativo. Anexar demonstração real; responder com a URL pública exata. Não usar endereço privado de repositório como link para experimentar.
+Condição/mídia: Anexar demonstração real e abrir a URL pública para conferir antes de enviar.
 
 ```text
-A leitura de placas ganhou uma demonstração interativa no ovictorlab. Mova o carro fictício e acompanhe cada etapa, da captura aos caracteres. Link na resposta.
+A leitura de placas ganhou uma demonstração interativa no ovictorlab. Mova o carro fictício e acompanhe cada etapa, da captura aos caracteres. https://victorsodre.github.io/radar-placas/
 ```
 
 ## Antes de colar no X
@@ -31,5 +31,5 @@ A leitura de placas ganhou uma demonstração interativa no ovictorlab. Mova o c
 - Conferir se o tempo verbal corresponde ao estado real do projeto.
 - Validar duração, legibilidade e texto alternativo da mídia anexada.
 - Conferir o comprimento no compositor; os rascunhos não dependem de assinatura ou postagem longa.
-- Inserir link somente quando existir e puder ser aberto pelo público.
+- Abrir a URL pública acima antes de postar; conferir também em uma janela sem sessão.
 - Após publicar, registrar data e permalink aqui. Não automatizar envios a partir deste arquivo.

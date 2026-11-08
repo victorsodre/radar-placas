@@ -1,6 +1,8 @@
 # Como o radar lê uma placa
 
-> **Desenvolvimento concluído e validado localmente em 07/11/2026.** Sétimo projeto da coleção; repositório privado, sem deploy.
+**[Abrir a experiência →](https://victorsodre.github.io/radar-placas/)** · [Os 10 experimentos](docs/COLECAO.md) · [Publicação e manutenção](docs/PUBLICACAO.md)
+
+[![Como uma placa é lida — captura real da experiência](public/share.png)](https://victorsodre.github.io/radar-placas/)
 
 **Como uma imagem vira uma sequência de letras e números?**
 
@@ -22,7 +24,7 @@ O Reel registrou 177.582 visualizações, 892 salvamentos e 7.269 compartilhamen
 3. [Identidade visual do ovictorlab](docs/IDENTIDADE-VISUAL.md).
 4. [Arquitetura e reaproveitamento do Fusquinha](docs/ARQUITETURA.md).
 5. [Assets e fontes apuradas](docs/ASSETS-E-FONTES.md).
-6. [Manutenção, validação e publicação futura](docs/MANUTENCAO.md).
+6. [Manutenção, validação e publicação](docs/MANUTENCAO.md).
 7. [Decisões e estado do projeto](docs/DECISOES.md).
 8. [Textos para o X](POSTAGENS-X.md) e [ordem da coleção](docs/COLECAO.md).
 

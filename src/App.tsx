@@ -1,3 +1,4 @@
+import { CollectionNav } from './ui/CollectionNav.tsx';
 import {useCallback,useEffect,useRef,useState} from 'react';
 import {ArrowLeft,ArrowRight,ArrowUpRight,Box,ChevronRight,Download,Focus,Layers3,Maximize,Minus,Pause,Play,Plus,RotateCcw,Search,X} from 'lucide-react';
 import {Brand} from './ui/Brand.tsx';
@@ -36,7 +37,7 @@ export function App(){
  useEffect(()=>{const media=matchMedia('(prefers-reduced-motion: reduce)');const change=()=>{setReduced(media.matches);if(media.matches)pause()};media.addEventListener('change',change);return()=>media.removeEventListener('change',change)},[pause]);
  useEffect(()=>{if(drawer)dialog.current?.showModal();else dialog.current?.close()},[drawer]);
  useEffect(()=>{if(selected&&innerWidth<=900){const id=requestAnimationFrame(()=>inspector.current?.scrollIntoView({block:'nearest',behavior:reduced?'instant':'smooth'}));return()=>cancelAnimationFrame(id)}},[selected,reduced]);
- useEffect(()=>{const key=(e:KeyboardEvent)=>{if(e.ctrlKey||e.metaKey||e.altKey||e.target instanceof HTMLInputElement||source||drawer)return;if(e.key.toLowerCase()==='r')scene.current?.home();if(e.key==='Escape')select(null)};document.addEventListener('keydown',key);return()=>document.removeEventListener('keydown',key)},[source,drawer,select]);
+ useEffect(()=>{const key=(e:KeyboardEvent)=>{if(document.querySelector('dialog[open]')||e.ctrlKey||e.metaKey||e.altKey||e.target instanceof HTMLInputElement||source||drawer)return;if(e.key.toLowerCase()==='r')scene.current?.home();if(e.key==='Escape')select(null)};document.addEventListener('keydown',key);return()=>document.removeEventListener('keydown',key)},[source,drawer,select]);
  function start(){setSnapshot(null);setStep(1);setSelected(null);setIsolated(false);setTour(null);setFlow(s=>startPass(s,reduced));setNotice('Nova passagem. O resultado anterior foi descartado.')}
  function change(c:Condition){if(c===flow.condition)return;setSnapshot(null);setStep(1);setIsolated(false);setSelected(null);setTour(null);setFlow(s=>changeCondition(s,c));setNotice('Condição alterada. Faça uma nova passagem para capturar a imagem.')}
  function reset(){setFlow(s=>initialFlow('clear',s.revision+1));setSnapshot(null);setStep(1);setSelected(null);setIsolated(false);setWireframe(false);setTour(null);setSearch('');requestAnimationFrame(()=>scene.current?.home());setNotice('Experiência reiniciada.')}
@@ -80,7 +81,7 @@ export function App(){
    </section>}
    {error&&!validCapture&&<section className="text-fallback"><h2>Como a imagem vira caracteres</h2><ol><li>A câmera captura uma imagem.</li><li>O sistema localiza a região da placa.</li><li>Um OCR interpreta os caracteres visíveis.</li><li>A imagem e o resultado podem ser conferidos.</li></ol><p>Neste laboratório, os resultados são pré-definidos e a placa é inventada. Não há OCR real ou medição de velocidade.</p></section>}
   </main>
-  <footer><span>UM EXPERIMENTO DO OVICTORLAB <i>© 2026</i></span><button onClick={()=>setSource('overview')}>Fontes, representação e créditos <ArrowUpRight size={13}/></button></footer>
+  <footer><span>UM EXPERIMENTO DO OVICTORLAB <i>© 2026</i></span><button onClick={()=>setSource('overview')}>Fontes, representação e créditos <ArrowUpRight size={13}/></button><CollectionNav current="radar-placas"/></footer>
   <Sources source={source} onClose={()=>setSource(null)}/><dialog className="parts-dialog" ref={dialog} aria-label="Conjuntos da cena" onClose={()=>setDrawer(false)}><div className="dialog-top"><span className="eyebrow">CONHEÇA A CENA</span><button className="icon-button" aria-label="Fechar conjuntos" onClick={()=>setDrawer(false)}><X size={18}/></button></div>{list()}</dialog><span className="sr-only" role="status" aria-live="polite">{notice}</span>
  </div>;
 }
