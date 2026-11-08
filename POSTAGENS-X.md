@@ -2,12 +2,12 @@
 
 Rascunhos para Victor publicar posteriormente. **Nada foi enviado.** Público: pessoas curiosas sobre engenharia/ciência e quem acompanha a construção dos projetos. Um assunto por post, sem métricas privadas ou promessa de data.
 
-## Planejamento
+## Apresentação do projeto
 
-Condição/mídia: Pode ser usado para anunciar a intenção. Mostrar esquema identificado como plano ou referência do Fusquinha.
+Condição/mídia: Versão local concluída. Anexar captura real; o texto não anuncia uma URL pública.
 
 ```text
-Quero transformar o vídeo sobre leitura de placas em uma demonstração interativa: o carro passa, a câmera captura e a imagem vira caracteres. Tudo com placas fictícias, para explorar o processo passo a passo.
+O vídeo sobre leitura de placas virou uma demonstração interativa. Um carro fictício passa pela câmera virtual; você vê a captura e o recorte. Os caracteres são pré-definidos e identificados como demonstração, sem OCR real.
 ```
 
 ## Bastidor
