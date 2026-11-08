@@ -10,6 +10,16 @@ Um carro, uma câmera e uma placa fictícia. A experiência mostra captura, reco
 
 Direção e autoria editorial: **Victor Sodré / ovictorlab**. [Site](https://ovictorlab.com/) · [Referência Fusquinha](https://victorsodre.github.io/fusquinha/) · [Repositório](https://github.com/victorsodre/radar-placas).
 
+## Vídeo relacionado do canal
+
+<a href="https://www.youtube.com/watch?v=F5GFaFoAbYg"><img src="public/video-thumbnail.jpg" width="280" alt="Assistir: Como descobrem que a placa do carro é clonada? (o clone aparece em dois lugares)" /></a>
+
+**[Como descobrem que a placa do carro é clonada? (o clone aparece em dois lugares)](https://www.youtube.com/watch?v=F5GFaFoAbYg)**
+
+O vídeo trata de placas clonadas. A experiência mostra captura, recorte e uma leitura demonstrativa; não identifica veículos reais.
+
+O player incorporado fica [na página do experimento](https://victorsodre.github.io/radar-placas/#video), com carregamento por clique e sem reprodução automática.
+
 ## Por que desenvolver
 
 O Reel registrou 177.582 visualizações, 892 salvamentos e 7.269 compartilhamentos no Instagram. Interesse em fiscalização pode diferir de interesse em modelagem; validar a interação no piloto. Consulta em 07/11/2026. Métricas acumuladas são sinais de interesse; não comprovam demanda pelo aplicativo ou alcance orgânico.

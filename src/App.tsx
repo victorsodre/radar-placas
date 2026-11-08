@@ -1,3 +1,4 @@
+import { VideoSection } from './ui/VideoSection.tsx';
 import { CollectionNav } from './ui/CollectionNav.tsx';
 import {useCallback,useEffect,useRef,useState} from 'react';
 import {ArrowLeft,ArrowRight,ArrowUpRight,Box,ChevronRight,Download,Focus,Layers3,Maximize,Minus,Pause,Play,Plus,RotateCcw,Search,X} from 'lucide-react';
@@ -6,7 +7,7 @@ import {Sources} from './ui/Sources.tsx';
 import {createScene} from './scene/runtime.ts';
 import {initialFlow,startPass,advanceFlow,nextStage,stageIndex,changeCondition,conditions,type Condition} from './simulation/flow.ts';
 import {catalog} from './content/catalog.ts';
-import {project,type SourceId} from './content/project.ts';
+import {type SourceId} from './content/project.ts';
 import type {Capture,SceneHandle} from './scene/types.ts';
 
 export function App(){
@@ -50,7 +51,7 @@ export function App(){
  const list=()=> <><label className="search"><Search size={15}/><input aria-label="Encontrar conjunto" placeholder="Encontrar conjunto" value={search} onChange={e=>setSearch(e.target.value)}/><span>04</span></label><div className="parts-list">{catalog.filter(p=>normalize(p.label).includes(normalize(search))).map((p)=><button className={'part-row'+(p.id===selected?' selected':'')} aria-pressed={p.id===selected} key={p.id} onClick={()=>{select(p.id);setDrawer(false)}}><strong>{p.label}</strong><ChevronRight size={14}/></button>)}{!catalog.some(p=>normalize(p.label).includes(normalize(search)))&&<small>Nenhum conjunto encontrado.</small>}</div></>;
  const primaryLabel=flow.running?'Pausar passagem':flow.progress>0&&flow.progress<1?'Continuar passagem':validCapture?'Ver leitura':'Passar pela câmera';
  return <div className="app">
-  <header className="header"><Brand/><div className="collection-label">O MUNDO POR DENTRO <span>/</span> LAB 07</div><a href={project.video} target="_blank" rel="noreferrer">Ver o vídeo <ArrowUpRight size={15}/></a></header>
+  <header className="header"><Brand/><div className="collection-label">O MUNDO POR DENTRO <span>/</span> LAB 07</div><a className="video-link" href="#video">Ver o vídeo <ArrowUpRight size={15}/></a></header>
   <main>
    <section className="workspace" aria-label="Explorar a captura">
     <div className="heading"><p className="eyebrow"><span/>EXPERIMENTO 07 <i>—</i> LEITURA DE PLACAS</p><h1>DA IMAGEM<br/>À PLACA<span>.</span></h1><p>Um carro, uma câmera.<br/>Como a imagem vira caracteres?</p></div>
@@ -81,7 +82,7 @@ export function App(){
    </section>}
    {error&&!validCapture&&<section className="text-fallback"><h2>Como a imagem vira caracteres</h2><ol><li>A câmera captura uma imagem.</li><li>O sistema localiza a região da placa.</li><li>Um OCR interpreta os caracteres visíveis.</li><li>A imagem e o resultado podem ser conferidos.</li></ol><p>Neste laboratório, os resultados são pré-definidos e a placa é inventada. Não há OCR real ou medição de velocidade.</p></section>}
   </main>
-  <footer><span>UM EXPERIMENTO DO OVICTORLAB <i>© 2026</i></span><button onClick={()=>setSource('overview')}>Fontes, representação e créditos <ArrowUpRight size={13}/></button><CollectionNav current="radar-placas"/></footer>
+  <VideoSection/><footer><span>UM EXPERIMENTO DO OVICTORLAB <i>© 2026</i></span><button onClick={()=>setSource('overview')}>Fontes, representação e créditos <ArrowUpRight size={13}/></button><CollectionNav current="radar-placas"/></footer>
   <Sources source={source} onClose={()=>setSource(null)}/><dialog className="parts-dialog" ref={dialog} aria-label="Conjuntos da cena" onClose={()=>setDrawer(false)}><div className="dialog-top"><span className="eyebrow">CONHEÇA A CENA</span><button className="icon-button" aria-label="Fechar conjuntos" onClick={()=>setDrawer(false)}><X size={18}/></button></div>{list()}</dialog><span className="sr-only" role="status" aria-live="polite">{notice}</span>
  </div>;
 }
