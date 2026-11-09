@@ -29,8 +29,8 @@ O exemplo usa distância conhecida entre sensores e tempo de passagem; cada faix
 
 - Uma câmera virtual captura 1280 × 720 pixels no meio da passagem. A imagem da placa é recortada a partir da projeção de seus quatro cantos; nenhum detector é executado.
 - LAB3D é uma sequência cenográfica deliberadamente curta, sem consulta a bases ou vínculo com proprietário.
-- Boa captura, ângulo aberto e pouca luz alteram posição da câmera ou exposição virtual. Não há simulação calibrada de sensor, ruído ou taxa de reconhecimento.
-- A leitura usa três resultados previstos: LAB3D, LA?3D e ??B?D. O ponto de interrogação é um recurso didático, não uma probabilidade calculada. Isso aparece junto ao resultado.
+- Boa captura, ângulo aberto, pouca luz e noite com IR alteram posição da câmera, exposição virtual ou o brilho da placa retrorrefletiva (IR em tons de cinza). Não há simulação calibrada de sensor, ruído ou taxa de reconhecimento.
+- A leitura usa resultados previstos: LAB3D (boa captura e noite com IR), LAB3? (ângulo aberto, perde a ponta mais distante) e ??B?D (pouca luz). O ponto de interrogação é um recurso didático, não uma probabilidade calculada. Isso aparece junto ao resultado.
 - O campo de visão é uma guia geométrica, não emissão luminosa ou eletromagnética. Trajeto e duração não produzem velocidade em km/h.
-- Origem das imagens, recorte, fonte e condição permanecem identificados. Alterar condição, repetir ou reiniciar invalida o quadro e as etapas anteriores.
+- Origem das imagens, recorte, fonte e condição permanecem identificados. Alterar a condição refaz a leitura na mesma passagem e mantém a etapa; repetir ou reiniciar invalida o quadro e as etapas anteriores.
 - Nenhuma foto, placa real, figura de fabricante, áudio ou modelo de terceiros incorporado. Geometria, placa e capturas são autorais.
