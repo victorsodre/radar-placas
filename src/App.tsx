@@ -1,8 +1,9 @@
-import { VideoSection } from './ui/VideoSection.tsx';
-import { CollectionNav } from './ui/CollectionNav.tsx';
+import { video } from './content/video.ts';
+import { VideoSection } from './kit/VideoSection.tsx';
+import { CollectionNav } from './kit/CollectionNav.tsx';
 import {useCallback,useEffect,useRef,useState} from 'react';
 import {ArrowLeft,ArrowRight,ArrowUpRight,Box,ChevronRight,Download,Focus,Layers3,Maximize,Minus,Pause,Play,Plus,RotateCcw,Search,X} from 'lucide-react';
-import {Brand} from './ui/Brand.tsx';
+import {Brand} from './kit/Brand.tsx';
 import {Sources} from './ui/Sources.tsx';
 import {createScene} from './scene/runtime.ts';
 import {initialFlow,startPass,advanceFlow,nextStage,stageIndex,changeCondition,conditions,type Condition} from './simulation/flow.ts';
@@ -82,7 +83,7 @@ export function App(){
    </section>}
    {error&&!validCapture&&<section className="text-fallback"><h2>Como a imagem vira caracteres</h2><ol><li>A câmera captura uma imagem.</li><li>O sistema localiza a região da placa.</li><li>Um OCR interpreta os caracteres visíveis.</li><li>A imagem e o resultado podem ser conferidos.</li></ol><p>Neste laboratório, os resultados são pré-definidos e a placa é inventada. Não há OCR real ou medição de velocidade.</p></section>}
   </main>
-  <VideoSection/><footer><span>UM EXPERIMENTO DO OVICTORLAB <i>© 2026</i></span><button onClick={()=>setSource('overview')}>Fontes, representação e créditos <ArrowUpRight size={13}/></button><CollectionNav current="radar-placas"/></footer>
+  <VideoSection video={video}/><footer><span>UM EXPERIMENTO DO OVICTORLAB <i>© 2026</i></span><button onClick={()=>setSource('overview')}>Fontes, representação e créditos <ArrowUpRight size={13}/></button><CollectionNav current="radar-placas"/></footer>
   <Sources source={source} onClose={()=>setSource(null)}/><dialog className="parts-dialog" ref={dialog} aria-label="Conjuntos da cena" onClose={()=>setDrawer(false)}><div className="dialog-top"><span className="eyebrow">CONHEÇA A CENA</span><button className="icon-button" aria-label="Fechar conjuntos" onClick={()=>setDrawer(false)}><X size={18}/></button></div>{list()}</dialog><span className="sr-only" role="status" aria-live="polite">{notice}</span>
  </div>;
 }

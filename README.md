@@ -2,7 +2,7 @@
 
 **[Abrir a experiência →](https://victorsodre.github.io/radar-placas/)** · [Os 10 experimentos](docs/COLECAO.md) · [Publicação e manutenção](docs/PUBLICACAO.md)
 
-[![Como uma placa é lida — captura real da experiência](public/share.png)](https://victorsodre.github.io/radar-placas/)
+[![Como uma placa é lida — captura real da experiência](public/share.jpg)](https://victorsodre.github.io/radar-placas/)
 
 **Como uma imagem vira uma sequência de letras e números?**
 
