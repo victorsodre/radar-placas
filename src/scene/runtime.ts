@@ -15,7 +15,7 @@ function plateTexture(){
  ctx.font='16px Archivo';ctx.fillText('CENOGRÁFICA',380,202);
  const texture=new T.CanvasTexture(canvas);texture.colorSpace=T.SRGBColorSpace;texture.anisotropy=4;return texture;
 }
-const nightExposure=.65,darkCaptureExposure=.025,infraredCaptureExposure=.08,retroreflection=7;
+const day={hemi:1.1,key:3,rim:1.8,env:.45},night={hemi:.1,key:.22,rim:.5,env:.05},darkCaptureExposure=.025,infraredCaptureExposure=.08,retroreflection=7;
 /** Infrared frames carry no colour: keep only the luminance. */
 function toGrayscale(ctx:CanvasRenderingContext2D,width:number,height:number){
  const image=ctx.getImageData(0,0,width,height),data=image.data;
@@ -29,10 +29,19 @@ export function createScene(host:HTMLElement,onPick:(id:string)=>void,onError:(t
  // Vertical swipes scroll the page; horizontal drags and pinches stay with the scene.
  renderer.domElement.style.touchAction='pan-y';
  const room=new RoomEnvironment(),pmrem=new T.PMREMGenerator(renderer),env=pmrem.fromScene(room,.04);room.dispose();pmrem.dispose();scene.environment=env.texture;scene.environmentIntensity=.45;
- scene.add(new T.HemisphereLight('#dce9ff','#3c3030',1.1));
+ const hemi=new T.HemisphereLight('#dce9ff','#3c3030',1.1);scene.add(hemi);
  const key=new T.DirectionalLight('#ffecd4',3);key.position.set(1,10,6);key.castShadow=true;key.shadow.mapSize.set(1024,1024);Object.assign(key.shadow.camera,{left:-12,right:12,top:10,bottom:-10,far:35});key.shadow.bias=-.0005;scene.add(key);
  const rim=new T.DirectionalLight('#a4c5fa',1.8);rim.position.set(-6,5,-7);scene.add(rim);
  const texture=plateTexture(),model=createModel(texture);scene.add(model.root);
+ const face=model.plateFace.material as T.MeshStandardMaterial,plateGlow={color:face.emissive.clone(),map:face.emissiveMap,intensity:face.emissiveIntensity};
+ /** The scene itself shows the condition: night darkens it; with IR the illuminator, its beam guide and the retroreflective plate light up. */
+ const light=(condition:ViewState['condition'])=>{
+  const dark=condition==='dark'||condition==='infrared',level=dark?night:day,ir=condition==='infrared';
+  hemi.intensity=level.hemi;key.intensity=level.key;rim.intensity=level.rim;scene.environmentIntensity=level.env;key.color.set(dark?'#9fb4e0':'#ffecd4');
+  model.irRing.visible=ir;model.irBeam.visible=ir;
+  if(ir){face.emissive.set('#ffffff');face.emissiveMap=face.map;face.emissiveIntensity=.9}else{face.emissive.copy(plateGlow.color);face.emissiveMap=plateGlow.map;face.emissiveIntensity=plateGlow.intensity}
+  face.needsUpdate=true;
+ };
  const highlight=new T.BoxHelper(new T.Object3D(),'#ffd21f');highlight.visible=false;scene.add(highlight);
  let state:ViewState={progress:0,condition:'clear',selected:null,isolated:false,wireframe:false};
  let disposed=false,active=false,lostContext=false,last=-Infinity,previousPose:{position:T.Vector3;target:T.Vector3}|null=null;
@@ -72,7 +81,7 @@ export function createScene(host:HTMLElement,onPick:(id:string)=>void,onError:(t
  const wire=(value:boolean)=>model.root.traverse(o=>{if(o instanceof T.Mesh){for(const m of Array.isArray(o.material)?o.material:[o.material])if(m instanceof T.MeshStandardMaterial)m.wireframe=value}});
  resize();home();
  return {parts:model.parts,
-  update(next){const oldIsolated=state.isolated,oldCondition=state.condition;state=next;applyPose(model,state.progress,state.condition);model.root.updateMatrixWorld(true);model.parts.forEach(p=>p.group.visible=!state.isolated||p.id===state.selected);model.road.visible=!state.isolated;wire(state.wireframe);renderer.toneMappingExposure=state.condition==='dark'||state.condition==='infrared'?nightExposure:1;
+  update(next){const oldIsolated=state.isolated,oldCondition=state.condition;state=next;applyPose(model,state.progress,state.condition);model.root.updateMatrixWorld(true);model.parts.forEach(p=>p.group.visible=!state.isolated||p.id===state.selected);model.road.visible=!state.isolated;wire(state.wireframe);if(oldCondition!==state.condition)light(state.condition);
    highlight.visible=Boolean(selected())&&!state.isolated;if(selected())highlight.setFromObject(selected()!.group);
    if(!oldIsolated&&state.isolated){previousPose={position:camera.position.clone(),target:controls.target.clone()};reframe()}
    if(oldIsolated&&!state.isolated&&previousPose){camera.position.copy(previousPose.position);controls.target.copy(previousPose.target);controls.update();previousPose=null}
@@ -86,9 +95,9 @@ export function createScene(host:HTMLElement,onPick:(id:string)=>void,onError:(t
    if(lostContext)throw Error('A captura não está disponível.');
    const size=renderer.getSize(new T.Vector2()),ratio=renderer.getPixelRatio(),exposure=renderer.toneMappingExposure;
    const visible=model.parts.map(p=>p.group.visible),road=model.road.visible,marked=highlight.visible;
-   const face=model.plateFace.material as T.MeshStandardMaterial,glow={color:face.emissive.clone(),map:face.emissiveMap,intensity:face.emissiveIntensity};
    try{
-    applyPose(model,.5,condition);model.parts.forEach(p=>p.group.visible=p.id==='vehicle'||p.id==='plate');model.road.visible=true;highlight.visible=false;wire(false);model.root.updateMatrixWorld(true);
+    // The capture keeps its own calibrated exposure per condition, so it always starts from the day lighting.
+    light('clear');applyPose(model,.5,condition);model.parts.forEach(p=>p.group.visible=p.id==='vehicle'||p.id==='plate');model.road.visible=true;highlight.visible=false;wire(false);model.root.updateMatrixWorld(true);
     const pose=capturePose(condition),sensor=new T.PerspectiveCamera(40,16/9,.05,100);sensor.position.copy(pose.position);sensor.lookAt(pose.target);sensor.updateMatrixWorld(true);
     const region=projectRegion(plateCorners(model),sensor,1280,720);renderer.setPixelRatio(1);renderer.setSize(1280,720,false);renderer.toneMappingExposure=condition==='dark'?darkCaptureExposure:condition==='infrared'?infraredCaptureExposure:1;
     // Infrared: the retroreflective plate sends the illuminator's light straight back to the lens.
@@ -98,7 +107,7 @@ export function createScene(host:HTMLElement,onPick:(id:string)=>void,onError:(t
     const crop=document.createElement('canvas');crop.width=region.width;crop.height=region.height;crop.getContext('2d')!.drawImage(image,region.x,region.y,region.width,region.height,0,0,region.width,region.height);
     return {frame:image.toDataURL('image/jpeg',.9),crop:crop.toDataURL('image/png'),cropImage:crop,region,condition,revision};
    }finally{
-    applyPose(model,state.progress,state.condition);model.parts.forEach((p,i)=>p.group.visible=visible[i]);model.road.visible=road;highlight.visible=marked;face.emissive.copy(glow.color);face.emissiveMap=glow.map;face.emissiveIntensity=glow.intensity;face.needsUpdate=true;wire(state.wireframe);renderer.toneMappingExposure=exposure;renderer.setPixelRatio(ratio);renderer.setSize(size.x,size.y,false);renderer.render(scene,camera);invalidate();
+    applyPose(model,state.progress,state.condition);model.parts.forEach((p,i)=>p.group.visible=visible[i]);model.road.visible=road;highlight.visible=marked;light(state.condition);wire(state.wireframe);renderer.toneMappingExposure=exposure;renderer.setPixelRatio(ratio);renderer.setSize(size.x,size.y,false);renderer.render(scene,camera);invalidate();
    }
   },
   dispose(){disposed=true;renderer.setAnimationLoop(null);observer.disconnect();controls.removeEventListener('change',invalidate);controls.dispose();renderer.domElement.removeEventListener('pointerdown',pointerDown);renderer.domElement.removeEventListener('pointerup',pointerUp);renderer.domElement.removeEventListener('pointercancel',pointerEnd);host.removeEventListener('wheel',wheel,{capture:true});renderer.domElement.removeEventListener('webglcontextlost',lost);document.removeEventListener('visibilitychange',visibility);model.dispose();texture.dispose();env.dispose();highlight.geometry.dispose();(highlight.material as T.Material).dispose();renderer.dispose();renderer.domElement.remove()},

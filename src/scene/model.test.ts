@@ -46,3 +46,24 @@ test('in the open-angle pose the end of the plate after LAB3 (D) is the one fart
  const camera=capturePose('angle').position,[first,last]=plateCorners(m);
  assert.ok(last.distanceTo(camera)>first.distanceTo(camera));m.dispose();
 });
+test('the car crosses the capture mark at mid-pass without a jump in speed',()=>{
+ assert.equal(travelX(.5),0);const h=1e-4;
+ assert.ok(Math.abs((travelX(.5)-travelX(.5-h))-(travelX(.5+h)-travelX(.5)))<1e-6);
+ assert.ok(travelX(1)>travelX(.9));
+});
+test('the car stops short of the camera pole in every condition and never overlaps it',()=>{
+ const m=createModel();
+ for(const c of conditions)for(const t of [0,.5,.9,1]){
+  applyPose(m,t,c.id);m.root.updateMatrixWorld(true);
+  const car=new T.Box3().setFromObject(m.parts[0].group).union(new T.Box3().setFromObject(m.parts[1].group));
+  const pole=new T.Box3().setFromObject(m.pole);pole.expandByScalar(.15);
+  assert.ok(!car.intersectsBox(pole),`${c.id} at ${t}`);
+  assert.ok(pole.min.x-car.max.x>1,`gap at ${c.id} ${t}`);
+ }
+ m.dispose();
+});
+test('the infrared beam guide runs from the camera lens to the plate at the capture point',()=>{
+ const m=createModel();applyPose(m,.5,'infrared');m.root.updateMatrixWorld(true);
+ const pose=capturePose('infrared'),tip=new T.Vector3(0,.5,0).applyMatrix4(m.irBeam.matrixWorld),base=new T.Vector3(0,-.5,0).applyMatrix4(m.irBeam.matrixWorld);
+ assert.ok(tip.distanceTo(pose.position)<1e-6&&base.distanceTo(pose.target)<1e-6);m.dispose();
+});

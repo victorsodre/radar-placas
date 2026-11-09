@@ -41,5 +41,16 @@ Pedido de Victor ("faça tudo" a partir da revisão dos dez labs). Liga o experi
 - Nova condição **Noite com IR** (quadro em tons de cinza, placa retrorrefletiva clara). "Pouca luz" passa a dizer que falta iluminação própria. Fonte: white paper da Axis (luz infravermelha à noite; placas retrorrefletivas).
 - Trocar a condição refaz a leitura na mesma passagem e mantém a etapa (antes zerava a passagem e escondia as etapas). "Ângulo aberto" agora perde o caractere da ponta mais distante da câmera (LAB3?).
 - PNG horizontal/vertical leva o recorte, os caracteres e, na etapa 05, o resultado do cruzamento; no celular abre a folha de compartilhamento.
-- Nome único "Placa clonada: como a câmera lê e o sistema descobre" (title/OG), h1 "Da placa ao clone", resumo em texto no index.html e JSON-LD VideoObject do EP282.
+- Nome único "Da placa ao clone: como as câmeras descobrem a placa clonada" (title/OG, alinhado ao título da coleção, 09/11/2026), h1 "Da placa ao clone", resumo em texto no index.html e JSON-LD VideoObject do EP282.
 - Celular: texto ≥ 11 px, alvos ≥ 44 px, descrição da passagem visível, ferramentas abaixo da cena, rolagem vertical livre sobre o canvas (touch-action pan-y), rodinha rola a página (Ctrl/⌘ + rodinha aproxima). Câmera mantém a órbita em resize, tela cheia, condição e isolamento. Toque no canvas só seleciona peça; não pausa nem desmarca.
+
+## 2026-11-09 — segunda rodada de revisão
+
+Pedido de Victor ("faça tudo"), a partir do navegador e do revisor.
+
+- O carro cruza a marca de captura no meio da passagem, freia e para 3 m antes da base da câmera; não atravessa mais o poste. Teste novo garante a folga e a velocidade contínua na marca.
+- "Pouca luz" e "Noite com IR" escurecem a cena 3D. Com IR aparecem anel no iluminador, cone do iluminador até a placa e placa clara (retrorrefletiva); a legenda da cena avisa "IR desenhado em vermelho", porque o infravermelho é invisível. A captura mantém a exposição calibrada de cada condição.
+- As cinco etapas ocupam a mesma altura no computador (painéis empilhados; o maior define a altura). No celular só a etapa ativa aparece, sem vão vazio antes do botão.
+- Texto de abertura corre em linha única no celular. Rótulos pequenos do computador sobem para 11 px. Cor de hover só em dispositivos com hover (toque não deixa aba amarela presa).
+- Número do lab vem de `labNumber('radar-placas')` do kit (LAB 02 / EXPERIMENTO 02, igual ao menu da coleção). Dica de mouse só com pointer fine; dica de toque só com pointer coarse (CSS, não JavaScript).
+- `share.jpg` refeito: captura horizontal real do botão "Salvar imagem" na etapa 05 (boa captura, 30 min), reduzida para 1200 × 630, 42 KB.

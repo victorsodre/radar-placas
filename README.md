@@ -1,4 +1,4 @@
-# Placa clonada: como a câmera lê e o sistema descobre
+# Da placa ao clone: como as câmeras descobrem a placa clonada
 
 **[Abrir a experiência →](https://victorsodre.github.io/radar-placas/)** · [Os 10 experimentos](docs/COLECAO.md) · [Publicação e manutenção](docs/PUBLICACAO.md)
 
@@ -40,7 +40,7 @@ O Reel registrou 177.582 visualizações, 892 salvamentos e 7.269 compartilhamen
 
 ## Experiência entregue
 
-Carro e placa cenográficos, câmera e campo de visão exploráveis. A passagem tem pausa, retomada e captura em um ponto fixo. Boa captura, ângulo aberto, pouca luz e noite com infravermelho mudam a câmera ou a exposição; trocar a condição refaz a leitura na mesma passagem.
+Carro e placa cenográficos, câmera e campo de visão exploráveis. A passagem tem pausa, retomada e captura em um ponto fixo. Boa captura, ângulo aberto, pouca luz e noite com infravermelho mudam a câmera ou a exposição; pouca luz e IR também escurecem a cena 3D, e o IR (invisível) aparece desenhado em vermelho. O carro para antes do poste da câmera. Trocar a condição refaz a leitura na mesma passagem.
 
 A câmera virtual gera uma imagem de 1280 × 720. O recorte usa os pixels dessa imagem. As etapas seguintes apresentam caracteres **pré-definidos**, com comparação à placa inventada LAB3D, e um cruzamento ilustrativo entre duas câmeras. Não há OCR real, consulta a cadastro ou medição de velocidade de veículo. Os limites aparecem junto ao resultado.
 
@@ -63,7 +63,7 @@ npm run preview
 
 ## Evidências e limites
 
-[Apuração](docs/APURACAO.md), [validação](docs/VALIDACAO.md) e [manutenção](docs/MANUTENCAO.md). Treze testes cobrem transições, troca de condição, cruzamento, movimento, projeção e enquadramento. Validação móvel por viewport do Chrome no Mac, sem telefone físico.
+[Apuração](docs/APURACAO.md), [validação](docs/VALIDACAO.md) e [manutenção](docs/MANUTENCAO.md). Dezesseis testes cobrem transições, troca de condição, cruzamento, movimento, parada antes do poste, guia do IR, projeção e enquadramento. Validação móvel por viewport do Chrome no Mac, sem telefone físico.
 
 O carro, a câmera, a iluminação e o trajeto são ilustrativos. Não há sensor calibrado, taxa de acerto, identidade de proprietário ou constatação de infração. Capturas ficam apenas na memória da página; reiniciar ou alterar a condição as descarta.
 

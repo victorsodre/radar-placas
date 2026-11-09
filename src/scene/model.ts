@@ -3,7 +3,9 @@ import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js'
 import {catalog} from '../content/catalog.ts';
 import {unit,type Condition} from '../simulation/flow.ts';
 import type {Part} from './types.ts';
-export const travelX=(progress:number)=>-4.5+9*unit(progress);
+/** The car crosses the capture mark at mid-pass at constant speed, then brakes and stops 3 m short of the camera base: it never reaches the pole. */
+const approach=4,stopAt=2;
+export const travelX=(progress:number)=>{const p=unit(progress);if(p<=.5)return approach*(2*p-1);const s=2*p-1;return stopAt*(1-(1-s)**2)};
 export function capturePose(condition:Condition){return {position:new T.Vector3(7,2.35,condition==='angle'?5.6:1.8),target:new T.Vector3(2.04,.72,0)}}
 const standard=(color:string,metalness=0,roughness=.6)=>new T.MeshStandardMaterial({color,metalness,roughness});
 const quad=(points:number[],material:T.Material)=>{const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(points,3));g.setIndex([0,1,2,0,2,3]);g.computeVertexNormals();return new T.Mesh(g,material)};
@@ -44,10 +46,14 @@ export function createModel(plateTexture?:T.Texture){
  box(cameraBody,.3,.3,.65,0,0,-.3,standard('#d4d9dc',.3,.4));box(cameraBody,.36,.05,.8,0,.17,-.3,standard('#dde1e0',.3,.4));
  const lens=new T.Mesh(new T.CylinderGeometry(.105,.105,.1,24),trim);lens.rotation.x=Math.PI/2;lens.position.z=.03;cameraBody.add(lens);
  const optic=new T.Mesh(new T.CircleGeometry(.073,24),glass);optic.position.z=.085;cameraBody.add(optic);
+ // Infrared illuminator: a ring around the lens and a beam guide, shown only in the "Noite com IR" condition.
+ // IR is invisible to the eye; the red colour is a drawing convention, as the scene note says.
+ const irRing=new T.Mesh(new T.TorusGeometry(.13,.022,8,32),new T.MeshStandardMaterial({color:'#3a0d14',emissive:'#ff3b4e',emissiveIntensity:2.2,roughness:.4}));irRing.position.z=.06;irRing.visible=false;cameraBody.add(irRing);
+ const irBeam=new T.Mesh(new T.ConeGeometry(.55,1,32,1,true),new T.MeshBasicMaterial({color:'#ff3b4e',transparent:true,opacity:.11,side:T.DoubleSide,depthWrite:false,blending:T.AdditiveBlending}));irBeam.visible=false;irBeam.raycast=()=>{};field.add(irBeam);
  const fg=new T.BufferGeometry(),fm=new T.MeshBasicMaterial({color:'#ffd21f',transparent:true,opacity:.045,side:T.DoubleSide,depthWrite:false});
  const fieldMesh=new T.Mesh(fg,fm);field.add(fieldMesh);fieldMesh.raycast=()=>{};
  const lg=new T.BufferGeometry(),lines=new T.LineSegments(lg,new T.LineBasicMaterial({color:'#d4b65f',transparent:true,opacity:.38}));field.add(lines);lines.raycast=()=>{};
- const model={root,parts,wheels,road,plateFace,cameraBody,pole,fieldMesh,lines,condition:null as Condition|null,dispose(){const gs=new Set<T.BufferGeometry>(),ms=new Set<T.Material>();root.traverse(o=>{if(o instanceof T.Mesh||o instanceof T.LineSegments){gs.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:[o.material])ms.add(m)}});gs.forEach(g=>g.dispose());ms.forEach(m=>m.dispose())}};
+ const model={root,parts,wheels,road,plateFace,cameraBody,pole,fieldMesh,lines,irRing,irBeam,condition:null as Condition|null,dispose(){const gs=new Set<T.BufferGeometry>(),ms=new Set<T.Material>();root.traverse(o=>{if(o instanceof T.Mesh||o instanceof T.LineSegments){gs.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:[o.material])ms.add(m)}});gs.forEach(g=>g.dispose());ms.forEach(m=>m.dispose())}};
  applyPose(model,0,'clear');return model;
 }
 export type Model=ReturnType<typeof createModel>;
@@ -62,5 +68,8 @@ export function applyPose(model:Model,progress:number,condition:Condition){
  const corners=[[-1,-1],[1,-1],[1,1],[-1,1]].map(([cx,cy])=>{const ray=new T.Vector3(cx,cy,.5).unproject(cam).sub(pose.position).normalize();return pose.position.clone().addScaledVector(ray,distance/ray.dot(forward))});
  const vertices:number[]=[],edges:number[]=[];
  for(let i=0;i<4;i++){vertices.push(...pose.position.toArray(),...corners[i].toArray(),...corners[(i+1)%4].toArray());edges.push(...pose.position.toArray(),...corners[i].toArray(),...corners[i].toArray(),...corners[(i+1)%4].toArray())}
+ // Beam guide: from the lens to the plate at the capture point (cone apex at the camera).
+ const toTarget=pose.target.clone().sub(pose.position),length=toTarget.length();
+ model.irBeam.scale.set(1,length,1);model.irBeam.position.copy(pose.position).addScaledVector(toTarget,.5);model.irBeam.quaternion.setFromUnitVectors(new T.Vector3(0,-1,0),toTarget.normalize());
  model.fieldMesh.geometry.setAttribute('position',new T.Float32BufferAttribute(vertices,3));model.fieldMesh.geometry.computeBoundingSphere();model.lines.geometry.setAttribute('position',new T.Float32BufferAttribute(edges,3));model.lines.geometry.computeBoundingSphere();
 }
