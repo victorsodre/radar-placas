@@ -14,7 +14,7 @@
 
 ## Testes proporcionais
 
-Sete testes cobrem transições, invalidação, pausa, relógio, movimento conjunto, geometria finita, enquadramento e projeção/recorte. No navegador, repetir o fluxo completo nas três condições, seleção, isolamento, tour, exportações e fallback. Conferir que recorte e região do quadro são idênticos pixel a pixel.
+Treze testes cobrem transições (cinco etapas), troca de condição, cruzamento (velocidade, limite, intervalo, relógio), movimento conjunto, geometria, enquadramento, lado distante da placa e projeção/recorte. No navegador, repetir o fluxo completo nas quatro condições, o cruzamento, seleção, isolamento, tour, exportações e fallback. Conferir que recorte e região do quadro são idênticos pixel a pixel.
 
 ## Rotina após lançamento
 
@@ -37,7 +37,9 @@ Usar a combinação de qualidade, uso e custo de manutenção para ajustar o pr�
 ## Regressões específicas
 
 - Pausar antes da captura não pode gerar imagem. Retomar cruza o ponto uma vez; quadro permanece congelado enquanto o carro termina.
-- Trocar condição, repetir e resetar precisam invalidar quadro e etapas. Nunca mostrar leitura antiga sob condição nova.
+- Trocar condição refaz quadro e leitura na mesma passagem, com nova revisão, e mantém a etapa; repetir e resetar invalidam tudo. Nunca mostrar leitura antiga sob condição nova.
+- Cruzamento: valores (120 km, 150 km/h, relógio) são ilustrativos e ficam em `src/simulation/crosscheck.ts`; leitura com "?" nunca gera alerta. Não citar regra de alerta real sem fonte.
+- Câmera: resize, tela cheia, condição e isolamento mantêm a direção da órbita; só "Reenquadrar" volta à vista inicial.
 - Captura deve independer de órbita, zoom, isolamento e malha de exploração. Conferir restauração do renderer e da câmera.
 - Projeção precisa conter os quatro cantos da placa em todas as condições. Recorte preserva perspectiva; não alegar retificação inexistente.
 - Celular 390/320 px e paisagem: ação principal acessível, nenhuma largura excedente e fontes fecháveis durante rolagem.

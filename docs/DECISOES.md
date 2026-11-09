@@ -32,3 +32,14 @@ Victor autorizou aprimorar e tornar públicos os dez projetos com HTML funcional
 ## 2026-11-08 — vídeo do canal incorporado
 
 Pedido de Victor: embed abaixo do experimento e thumbnail clicável no README. Vídeo `F5GFaFoAbYg`, autoria ovictorlab confirmada pelo oEmbed público. O vídeo trata de placas clonadas. A experiência mostra captura, recorte e uma leitura demonstrativa; não identifica veículos reais. Player `youtube-nocookie.com`, criado só por clique, `autoplay=0`, controles nativos, referrer de origem e link direto sempre disponível. Capa local para não carregar o YouTube na abertura; layout portrait. Cabeçalho leva à seção `#video`. Identidade preservada; nenhum upload ou alteração de vídeo no canal.
+
+## 2026-11-09 — cruzamento de leituras e revisão
+
+Pedido de Victor ("faça tudo" a partir da revisão dos dez labs). Liga o experimento ao vídeo incorporado (EP282, placa clonada).
+
+- Etapa 05 **Cruzamento**: duas câmeras a 120 km (ilustrativo), mesma placa LAB3D, intervalo ajustável e velocidade média mínima em linha reta; acima de 150 km/h (limite ilustrativo) acende "suspeita de clone". Leitura com "?" não entra na comparação. Fontes: AEN-PR 24/02/2026 (mesma placa em locais distantes em curto intervalo; chassi comparado com o cadastro) e O Progresso de Tatuí 15/10/2024 (caso Tatuí/Santo André, sem horário da primeira leitura). A regra real do alerta não é publicada; isso aparece na tela.
+- Nova condição **Noite com IR** (quadro em tons de cinza, placa retrorrefletiva clara). "Pouca luz" passa a dizer que falta iluminação própria. Fonte: white paper da Axis (luz infravermelha à noite; placas retrorrefletivas).
+- Trocar a condição refaz a leitura na mesma passagem e mantém a etapa (antes zerava a passagem e escondia as etapas). "Ângulo aberto" agora perde o caractere da ponta mais distante da câmera (LAB3?).
+- PNG horizontal/vertical leva o recorte, os caracteres e, na etapa 05, o resultado do cruzamento; no celular abre a folha de compartilhamento.
+- Nome único "Placa clonada: como a câmera lê e o sistema descobre" (title/OG), h1 "Da placa ao clone", resumo em texto no index.html e JSON-LD VideoObject do EP282.
+- Celular: texto ≥ 11 px, alvos ≥ 44 px, descrição da passagem visível, ferramentas abaixo da cena, rolagem vertical livre sobre o canvas (touch-action pan-y), rodinha rola a página (Ctrl/⌘ + rodinha aproxima). Câmera mantém a órbita em resize, tela cheia, condição e isolamento. Toque no canvas só seleciona peça; não pausa nem desmarca.

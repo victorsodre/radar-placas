@@ -41,3 +41,8 @@ test('framing keeps all parts in view across travel, conditions and screen propo
   }
  }m.dispose();
 });
+test('in the open-angle pose the end of the plate after LAB3 (D) is the one farther from the camera',()=>{
+ const m=createModel();applyPose(m,.5,'angle');m.root.updateMatrixWorld(true);
+ const camera=capturePose('angle').position,[first,last]=plateCorners(m);
+ assert.ok(last.distanceTo(camera)>first.distanceTo(camera));m.dispose();
+});

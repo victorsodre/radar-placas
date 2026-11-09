@@ -1,13 +1,15 @@
 export const conditions=[
  {id:'clear',label:'Boa captura',hint:'Imagem clara, câmera próxima do eixo do carro.',result:'LAB3D'},
- {id:'angle',label:'Ângulo aberto',hint:'A perspectiva comprime a placa na imagem.',result:'LA?3D'},
- {id:'dark',label:'Pouca luz',hint:'Menos luz reduz a informação visível na captura.',result:'??B?D'},
+ {id:'angle',label:'Ângulo aberto',hint:'A perspectiva comprime a placa; o lado mais distante da câmera perde detalhe.',result:'LAB3?'},
+ {id:'dark',label:'Pouca luz',hint:'Sem iluminação própria, a câmera recebe pouca luz e os caracteres se perdem.',result:'??B?D'},
+ {id:'infrared',label:'Noite com IR',hint:'À noite, câmeras de placa usam luz infravermelha, invisível ao motorista. A placa é retrorrefletiva e devolve essa luz à câmera.',result:'LAB3D'},
 ] as const;
 export type Condition=typeof conditions[number]['id'];
-export const stages=['ready','captured','cropped','recognized','reviewed'] as const;
+export const stages=['ready','captured','cropped','recognized','reviewed','crossed'] as const;
 export type Stage=typeof stages[number];
 export type Flow={condition:Condition;progress:number;running:boolean;stage:Stage;revision:number};
 export const stageIndex=(stage:Stage)=>stages.indexOf(stage);
+export const lastStep=stages.length-1;
 export const unit=(value:number)=>Number.isFinite(value)?Math.min(1,Math.max(0,value)):0;
 export const initialFlow=(condition:Condition='clear',revision=0):Flow=>({condition,revision,progress:0,running:false,stage:'ready'});
 export function startPass(state:Flow,reduced=false):Flow{return {...initialFlow(state.condition,state.revision+1),running:!reduced,progress:reduced?1:0,stage:reduced?'captured':'ready'}}
@@ -18,7 +20,8 @@ export function advanceFlow(state:Flow,seconds:number,visible:boolean):Flow{
  return {...state,progress,running:progress<1,stage};
 }
 export function nextStage(state:Flow):Flow{
- if(state.running||state.stage==='ready'||state.stage==='reviewed')return state;
+ if(state.running||state.stage==='ready'||stageIndex(state.stage)===lastStep)return state;
  return {...state,stage:stages[stageIndex(state.stage)+1]};
 }
-export function changeCondition(state:Flow,condition:Condition):Flow{return state.condition===condition?state:initialFlow(condition,state.revision+1)}
+/** Same pass, new image: the capture point is fixed, so only the revision changes and the reading is redone. */
+export function changeCondition(state:Flow,condition:Condition):Flow{return state.condition===condition?state:{...state,condition,revision:state.revision+1}}
